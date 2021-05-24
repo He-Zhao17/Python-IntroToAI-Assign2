@@ -19,6 +19,9 @@ class State:
 class EightPuzzleState(State):
     def __init__(self, start):
         self.array = start
+        self.map = {self.array[0] : 0};
+        for i in range(1, 9):
+            self.map[self.array[i]] = i;
 
     def isGoal(self):
         for i in range (8) :
@@ -46,6 +49,21 @@ class EightPuzzleState(State):
                     res += "%s " (self.array[i])
         return res
 
+    # def successors(self):
+
+
+    ### Helper:
+
+    def slideBlankLeft(self):
+        bIndex = self.map[0]
+        if bIndex == 0 or bIndex == 3 or bIndex == 6:
+            return -1
+        else:
+            self.array[bIndex] = self.array[bIndex - 1]
+            self.map[self.array[bIndex]] = bIndex
+            self.array[bIndex - 1] = 0
+            self.map[0] = bIndex - 1
+            return bIndex - 1
 
 
 
