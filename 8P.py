@@ -65,6 +65,16 @@ class EightPuzzleState(State):
             self.map[0] = bIndex - 1
             return bIndex - 1
 
+    def slideBlankRight(self):
+        bIndex = self.map[0]
+        if bIndex == 2 or bIndex == 5 or bIndex == 8:
+            return -1
+        else:
+            self.array[bIndex] = self.array[bIndex + 1]
+            self.map[self.array[bIndex]] = bIndex
+            self.array[bIndex + 1] = 0
+            self.map[0] = bIndex + 1
+            return bIndex + 1
 
 
 
