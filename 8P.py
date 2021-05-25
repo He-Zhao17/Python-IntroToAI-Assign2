@@ -1,5 +1,6 @@
 import copy
 import state
+from queue import Queue, LifoQueue
 
 ### An abstract class that other states will inherit from.
 class State:
@@ -51,56 +52,48 @@ class EightPuzzleState(State):
 
     ### Helper:
 
-    def slideBlankLeft(self):
-        bIndex = 0
-        for i in range(9):
-            if self.array[i] == 0:
-                bIndex = i
-        if bIndex == 0 or bIndex == 3 or bIndex == 6:
-            return -1
-        else:
-            self.array[bIndex] = self.array[bIndex - 1]
-            self.array[bIndex - 1] = 0
-            return bIndex - 1
+    def slideBlankLeft(self, arr, bIndex):
+        arr[bIndex] = arr[bIndex - 1]
+        arr[bIndex - 1] = 0
+        return arr
 
-    def slideBlankRight(self):
-        bIndex = 0
-        for i in range(9):
-            if self.array[i] == 0:
-                bIndex = i
-        if bIndex == 2 or bIndex == 5 or bIndex == 8:
-            return -1
-        else:
-            self.array[bIndex] = self.array[bIndex + 1]
-            self.array[bIndex + 1] = 0
-            return bIndex + 1
+    def slideBlankRight(self, arr, bIndex):
+        arr[bIndex] = arr[bIndex + 1]
+        arr[bIndex + 1] = 0
+        return arr
 
-    def slideBlankUp(self):
-        bIndex = 0
-        for i in range(9):
-            if self.array[i] == 0:
-                bIndex = i
-        if bIndex == 0 or bIndex == 1 or bIndex == 2:
-            return -1
-        else:
-            self.array[bIndex] = self.array[bIndex - 3]
-            self.array[bIndex - 3] = 0
-            return bIndex - 3
+    def slideBlankUp(self, arr, bIndex):
+        arr[bIndex] = arr[bIndex - 3]
+        arr[bIndex - 3] = 0
+        return arr
 
-    def slideBlankDown(self):
-        bIndex = 0
-        for i in range(9):
-            if self.array[i] == 0:
-                bIndex = i
-        if bIndex == 6 or bIndex == 7 or bIndex == 8:
-            return -1
-        else:
-            self.array[bIndex] = self.array[bIndex + 3]
-            self.array[bIndex + 3] = 0
-            return bIndex + 3
+    def slideBlankDown(self, arr, bIndex):
+        arr[bIndex] = arr[bIndex + 3]
+        arr[bIndex + 3] = 0
+        return arr
 
+    @property
     def successors(self):
-        successorsStates = []
-        if ()
+        queue = Queue(maxsize = 0)
+        stack = LifoQueue(maxsize = 0)
+        if self.isGoal(self.array):
+            stack.put(self.array)
+            return stack
+        else:
+            queue.put(self.array)
+            stack.put(self.array)
+            while not queue.empty():
+                pointer = queue.get()
+                bIndex = 0
+                for i in range(9):
+                    if pointer[i] == 0:
+                        bIndex = i
+                if bIndex != 0 and bIndex != 3 and bIndex != 6:
+                    temp = self.slideBlankLeft(pointer)
+                    if self.isGoal(temp):
+                        stack
+
+
+
 
 

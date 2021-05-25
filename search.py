@@ -9,7 +9,7 @@ def BFS(initialState) :
         if currentNode.isGoal() :
             return currentNode
         else :
-            successorStates = currentNode.successors()
+            successorStates = currentNode.successors
             searchQueue.extend(successorStates)
     return None
 
