@@ -19,9 +19,6 @@ class State:
 class EightPuzzleState(State):
     def __init__(self, start):
         self.array = start
-        self.map = {self.array[0] : 0};
-        for i in range(1, 9):
-            self.map[self.array[i]] = i;
 
     def isGoal(self):
         for i in range (8) :
@@ -30,7 +27,7 @@ class EightPuzzleState(State):
             else:
                 return False
 
-        if (self.array[8] == -1):
+        if self.array[8] == -1:
             return True
         else:
             return False
@@ -55,48 +52,55 @@ class EightPuzzleState(State):
     ### Helper:
 
     def slideBlankLeft(self):
-        bIndex = self.map[0]
+        bIndex = 0
+        for i in range(9):
+            if self.array[i] == 0:
+                bIndex = i
         if bIndex == 0 or bIndex == 3 or bIndex == 6:
             return -1
         else:
             self.array[bIndex] = self.array[bIndex - 1]
-            self.map[self.array[bIndex]] = bIndex
             self.array[bIndex - 1] = 0
-            self.map[0] = bIndex - 1
             return bIndex - 1
 
     def slideBlankRight(self):
-        bIndex = self.map[0]
+        bIndex = 0
+        for i in range(9):
+            if self.array[i] == 0:
+                bIndex = i
         if bIndex == 2 or bIndex == 5 or bIndex == 8:
             return -1
         else:
             self.array[bIndex] = self.array[bIndex + 1]
-            self.map[self.array[bIndex]] = bIndex
             self.array[bIndex + 1] = 0
-            self.map[0] = bIndex + 1
             return bIndex + 1
 
     def slideBlankUp(self):
-        bIndex = self.map[0]
+        bIndex = 0
+        for i in range(9):
+            if self.array[i] == 0:
+                bIndex = i
         if bIndex == 0 or bIndex == 1 or bIndex == 2:
             return -1
         else:
             self.array[bIndex] = self.array[bIndex - 3]
-            self.map[self.array[bIndex]] = bIndex
             self.array[bIndex - 3] = 0
-            self.map[0] = bIndex - 3
             return bIndex - 3
 
     def slideBlankDown(self):
-        bIndex = self.map[0]
+        bIndex = 0
+        for i in range(9):
+            if self.array[i] == 0:
+                bIndex = i
         if bIndex == 6 or bIndex == 7 or bIndex == 8:
             return -1
         else:
             self.array[bIndex] = self.array[bIndex + 3]
-            self.map[self.array[bIndex]] = bIndex
             self.array[bIndex + 3] = 0
-            self.map[0] = bIndex + 3
             return bIndex + 3
 
+    def successors(self):
+        successorsStates = []
+        if ()
 
 
