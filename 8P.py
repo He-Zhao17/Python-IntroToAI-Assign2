@@ -36,7 +36,7 @@ class EightPuzzleState(State):
             else:
                 return False
 
-        if arr[8] == -1:
+        if arr[8] == 0:
             return True
         else:
             return False
@@ -57,22 +57,26 @@ class EightPuzzleState(State):
 
     # def successors(self):
 
-    def slideBlankLeft(self, arr, bIndex):
+    def slideBlankLeft(self, array, bIndex):
+        arr = copy.copy(array)
         arr[bIndex] = arr[bIndex - 1]
         arr[bIndex - 1] = 0
         return arr
 
-    def slideBlankRight(self, arr, bIndex):
+    def slideBlankRight(self, array, bIndex):
+        arr = copy.copy(array)
         arr[bIndex] = arr[bIndex + 1]
         arr[bIndex + 1] = 0
         return arr
 
-    def slideBlankUp(self, arr, bIndex):
+    def slideBlankUp(self, array, bIndex):
+        arr = copy.copy(array)
         arr[bIndex] = arr[bIndex - 3]
         arr[bIndex - 3] = 0
         return arr
 
-    def slideBlankDown(self, arr, bIndex):
+    def slideBlankDown(self, array, bIndex):
+        arr = copy.copy(array)
         arr[bIndex] = arr[bIndex + 3]
         arr[bIndex + 3] = 0
         return arr
