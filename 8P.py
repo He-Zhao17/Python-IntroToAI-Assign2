@@ -90,51 +90,76 @@ class EightPuzzleState(State):
             res = rootNode
         else:
             queue.put(rootNode)
+            closedList = {0: [rootNode.array]}
             while not queue.empty():
                 pointer = queue.get()
                 bIndex = 0
                 for i in range(9):
                     if pointer.array[i] == 0:
                         bIndex = i
+
+
                 if bIndex != 0 and bIndex != 3 and bIndex != 6:
                     temp = self.slideBlankLeft(pointer.array, bIndex)
-                    tempNode = Node(temp)
-                    tempNode.parent = pointer
-                    if self.isGoal(temp):
-                        res = tempNode
-                        break
-                    else:
-                        queue.put(tempNode)
+                    if self.clSearch(closedList[bIndex - 1], temp) == False:
+                        tempNode = Node(temp)
+                        tempNode.parent = pointer
+                        if self.isGoal(temp):
+                            res = tempNode
+                            break
+                        else:
+                            queue.put(tempNode)
+                            if closedList[bIndex - 1] is None:
+                                closedList[bIndex - 1] = [temp]
+                            else:
+                                closedList[bIndex - 1].append(temp)
+
+
 
                 if bIndex != 2 and bIndex != 5 and bIndex != 8:
                     temp = self.slideBlankRight(pointer.array, bIndex)
-                    tempNode = Node(temp)
-                    tempNode.parent = pointer
-                    if self.isGoal(temp):
-                        res = tempNode
-                        break
-                    else:
-                        queue.put(tempNode)
+                    if self.clSearch(closedList[bIndex + 1], temp) == False:
+                        tempNode = Node(temp)
+                        tempNode.parent = pointer
+                        if self.isGoal(temp):
+                            res = tempNode
+                            break
+                        else:
+                            queue.put(tempNode)
+                            if closedList[bIndex + 1] is None:
+                                closedList[bIndex + 1] = [temp]
+                            else:
+                                closedList[bIndex + 1].append(temp)
 
                 if bIndex != 0 and bIndex != 1 and bIndex != 2:
                     temp = self.slideBlankUp(pointer.array, bIndex)
-                    tempNode = Node(temp)
-                    tempNode.parent = pointer
-                    if self.isGoal(temp):
-                        res = tempNode
-                        break
-                    else:
-                        queue.put(tempNode)
+                    if self.clSearch(closedList[bIndex + 3], temp) == False:
+                        tempNode = Node(temp)
+                        tempNode.parent = pointer
+                        if self.isGoal(temp):
+                            res = tempNode
+                            break
+                        else:
+                            queue.put(tempNode)
+                            if closedList[bIndex + 3] is None:
+                                closedList[bIndex + 3] = [temp]
+                            else:
+                                closedList[bIndex + 3].append(temp)
 
                 if bIndex != 6 and bIndex != 7 and bIndex != 8:
                     temp = self.slideBlankDown(pointer.array, bIndex)
-                    tempNode = Node(temp)
-                    tempNode.parent = pointer
-                    if self.isGoal(temp):
-                        res = tempNode
-                        break
-                    else:
-                        queue.put(tempNode)
+                    if self.clSearch(closedList[bIndex - 3], temp) == False:
+                        tempNode = Node(temp)
+                        tempNode.parent = pointer
+                        if self.isGoal(temp):
+                            res = tempNode
+                            break
+                        else:
+                            queue.put(tempNode)
+                            if closedList[bIndex - 3] is None:
+                                closedList[bIndex - 3] = [temp]
+                            else:
+                                closedList[bIndex - 3].append(temp)
 
         pointer = res
         sta = LifoQueue(0)
@@ -145,6 +170,23 @@ class EightPuzzleState(State):
         while not sta.empty():
             result.append(sta.get())
         return result
+
+    def clSearch(self, clist, arr):
+        if not clist is None:
+            for i in clist:
+                flag = True
+                for k in range(9):
+                    if i[k] == arr[k]:
+                        continue
+                    else:
+                        flag = False
+                        break
+                if flag:
+                    return True
+            return False
+
+        else:
+            return False
 
 
 start = [0, 1, 2, 3, 4, 5, 6, 7, 8]
