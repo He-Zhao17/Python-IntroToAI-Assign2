@@ -2,6 +2,7 @@ import copy
 import state
 from queue import Queue, LifoQueue
 
+
 ### An abstract class that other states will inherit from.
 class State:
 
@@ -17,18 +18,25 @@ class State:
     def __repr__(self):
         pass
 
+
+class Node:
+    def __init__(self, arr):
+        self.array = arr
+        self.parent = None
+
+
 class EightPuzzleState(State):
     def __init__(self, start):
         self.array = start
 
-    def isGoal(self):
-        for i in range (8) :
-            if self.array[i] == i + 1:
+    def isGoal(self, arr):
+        for i in range(8):
+            if arr[i] == i + 1:
                 continue
             else:
                 return False
 
-        if self.array[8] == -1:
+        if arr[8] == -1:
             return True
         else:
             return False
@@ -39,18 +47,15 @@ class EightPuzzleState(State):
         res = ""
         for i in range(9):
             if i == 2 or i == 5:
-                res += "%s\n" (self.array[i])
+                res += "%s\n" % (self.array[i])
             else:
                 if i == 8:
-                    res += "%s" (self.array[8])
+                    res += "%s" % (self.array[8])
                 else:
-                    res += "%s " (self.array[i])
+                    res += "%s " % (self.array[i])
         return res
 
     # def successors(self):
-
-
-    ### Helper:
 
     def slideBlankLeft(self, arr, bIndex):
         arr[bIndex] = arr[bIndex - 1]
@@ -74,26 +79,71 @@ class EightPuzzleState(State):
 
     @property
     def successors(self):
-        queue = Queue(maxsize = 0)
-        stack = LifoQueue(maxsize = 0)
+        queue = Queue(maxsize=0)
+        res = None
+        rootNode = Node(self.array)
         if self.isGoal(self.array):
-            stack.put(self.array)
-            return stack
+            res = rootNode
         else:
-            queue.put(self.array)
-            stack.put(self.array)
+            queue.put(rootNode)
             while not queue.empty():
                 pointer = queue.get()
                 bIndex = 0
                 for i in range(9):
-                    if pointer[i] == 0:
+                    if pointer.array[i] == 0:
                         bIndex = i
                 if bIndex != 0 and bIndex != 3 and bIndex != 6:
-                    temp = self.slideBlankLeft(pointer)
+                    temp = self.slideBlankLeft(pointer.array, bIndex)
+                    tempNode = Node(temp)
+                    tempNode.parent = pointer
                     if self.isGoal(temp):
-                        stack
+                        res = tempNode
+                        break
+                    else:
+                        queue.put(tempNode)
+
+                if bIndex != 2 and bIndex != 5 and bIndex != 8:
+                    temp = self.slideBlankRight(pointer.array, bIndex)
+                    tempNode = Node(temp)
+                    tempNode.parent = pointer
+                    if self.isGoal(temp):
+                        res = tempNode
+                        break
+                    else:
+                        queue.put(tempNode)
+
+                if bIndex != 0 and bIndex != 1 and bIndex != 2:
+                    temp = self.slideBlankUp(pointer.array, bIndex)
+                    tempNode = Node(temp)
+                    tempNode.parent = pointer
+                    if self.isGoal(temp):
+                        res = tempNode
+                        break
+                    else:
+                        queue.put(tempNode)
+
+                if bIndex != 6 and bIndex != 7 and bIndex != 8:
+                    temp = self.slideBlankDown(pointer.array, bIndex)
+                    tempNode = Node(temp)
+                    tempNode.parent = pointer
+                    if self.isGoal(temp):
+                        res = tempNode
+                        break
+                    else:
+                        queue.put(tempNode)
+
+        pointer = res
+        sta = LifoQueue(0)
+        while not pointer:
+            sta.put(pointer.array)
+            pointer = pointer.parent
+        result = []
+        while not sta.empty():
+            result.append(sta.get())
+        return result
 
 
-
-
-
+start = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+test = EightPuzzleState(start)
+res = test.successors
+print(res)
