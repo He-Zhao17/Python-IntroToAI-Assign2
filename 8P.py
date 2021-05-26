@@ -101,7 +101,7 @@ class EightPuzzleState(State):
 
                 if bIndex != 0 and bIndex != 3 and bIndex != 6:
                     temp = self.slideBlankLeft(pointer.array, bIndex)
-                    if self.clSearch(closedList[bIndex - 1], temp) == False:
+                    if self.clSearch(closedList.get(bIndex - 1), temp) == False:
                         tempNode = Node(temp)
                         tempNode.parent = pointer
                         if self.isGoal(temp):
@@ -109,7 +109,7 @@ class EightPuzzleState(State):
                             break
                         else:
                             queue.put(tempNode)
-                            if closedList[bIndex - 1] is None:
+                            if closedList.get(bIndex - 1) is None:
                                 closedList[bIndex - 1] = [temp]
                             else:
                                 closedList[bIndex - 1].append(temp)
@@ -118,7 +118,7 @@ class EightPuzzleState(State):
 
                 if bIndex != 2 and bIndex != 5 and bIndex != 8:
                     temp = self.slideBlankRight(pointer.array, bIndex)
-                    if self.clSearch(closedList[bIndex + 1], temp) == False:
+                    if self.clSearch(closedList.get(bIndex + 1), temp) == False:
                         tempNode = Node(temp)
                         tempNode.parent = pointer
                         if self.isGoal(temp):
@@ -126,14 +126,14 @@ class EightPuzzleState(State):
                             break
                         else:
                             queue.put(tempNode)
-                            if closedList[bIndex + 1] is None:
+                            if closedList.get(bIndex + 1) is None:
                                 closedList[bIndex + 1] = [temp]
                             else:
                                 closedList[bIndex + 1].append(temp)
 
                 if bIndex != 0 and bIndex != 1 and bIndex != 2:
                     temp = self.slideBlankUp(pointer.array, bIndex)
-                    if self.clSearch(closedList[bIndex + 3], temp) == False:
+                    if self.clSearch(closedList.get(bIndex - 3), temp) == False:
                         tempNode = Node(temp)
                         tempNode.parent = pointer
                         if self.isGoal(temp):
@@ -141,25 +141,25 @@ class EightPuzzleState(State):
                             break
                         else:
                             queue.put(tempNode)
-                            if closedList[bIndex + 3] is None:
-                                closedList[bIndex + 3] = [temp]
-                            else:
-                                closedList[bIndex + 3].append(temp)
-
-                if bIndex != 6 and bIndex != 7 and bIndex != 8:
-                    temp = self.slideBlankDown(pointer.array, bIndex)
-                    if self.clSearch(closedList[bIndex - 3], temp) == False:
-                        tempNode = Node(temp)
-                        tempNode.parent = pointer
-                        if self.isGoal(temp):
-                            res = tempNode
-                            break
-                        else:
-                            queue.put(tempNode)
-                            if closedList[bIndex - 3] is None:
+                            if closedList.get(bIndex - 3) is None:
                                 closedList[bIndex - 3] = [temp]
                             else:
                                 closedList[bIndex - 3].append(temp)
+
+                if bIndex != 6 and bIndex != 7 and bIndex != 8:
+                    temp = self.slideBlankDown(pointer.array, bIndex)
+                    if self.clSearch(closedList.get(bIndex + 3), temp) == False:
+                        tempNode = Node(temp)
+                        tempNode.parent = pointer
+                        if self.isGoal(temp):
+                            res = tempNode
+                            break
+                        else:
+                            queue.put(tempNode)
+                            if closedList.get(bIndex + 3) is None:
+                                closedList[bIndex + 3] = [temp]
+                            else:
+                                closedList[bIndex + 3].append(temp)
 
         pointer = res
         sta = LifoQueue(0)
